@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <title>English Project</title>
+  <style>
+
+    #main-div {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .predict-btn {
+      width: 120px;
+      height: 40px;
+      background-color: green;
+      margin-top: 10px;
+      color: white;
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+
+    label {
+      padding: 20px 10px;
+      width: 200px;
+      background-color: #333;
+      color: #FFF;
+      text-transform: uppercase;
+      text-align: center;
+      display: block;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+
+    .character-div {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+  </style>
+</head>
+<body>
+  <div id="main-div">
+    <h2>One Piece Character Identifier</h2>
+    <h4>Machine learning model that identifies some characters from the One Piece anime.</h4>
+    <img style="margin-bottom: 10px;" src="https://sm.ign.com/ign_br/tv/o/one-piece-/one-piece-2_1xby.jpg" alt="OP"/>
+    <label for="input">Send file</label>
+    <input type="file" name="input" id="input"/>
+    <button class="predict-btn">Predict</button>
+  </div>
+</body>
+<script>
+  const btn = document.querySelector('.predict-btn')
+  console.log("Botão:", btn)
+  if(btn) {
+    btn.addEventListener('click', () => {
+      const input = document.querySelector('#input')
+      const img = input.files[0];
+      if(img) {
+        const formData = new FormData()
+        formData.append('file', img);
+
+        axios.post('http://localhost:5000/model', formData)
+          .then(res => {
+            const img_dict = {
+                'Vinsmoke Sanji': 'https://i0.wp.com/mugiwarasoficial.com/wp-content/uploads/2021/10/Sanji-of-One-Piece.jpg?fit=960%2C500&ssl=1',
+                'Roronoa Zoro': 'https://ovicio.com.br/wp-content/uploads/2021/07/20210712-one-piece-zoro-wano-postcover-1024x576.jpg',
+                'Monkey D. Luffy': 'https://nerdhits.com.br/wp-content/uploads/2022/02/luffy-one-piece-1200x720.jpg'
+            }
+            const characterName = res.data;
+            console.log(characterName)
+            const characterDiv = document.querySelector('#main-div .character-div')
+            const divHtml = `
+                <h2>Your character is ${characterName}</h2>
+                <img style="margin-bottom: 10px;" src="${img_dict[characterName]}" alt="OP"/>
+              `
+            const newCharacterDiv = document.createElement('div')
+            newCharacterDiv.classList.add('character-div')
+            newCharacterDiv.innerHTML = divHtml
+            const mainDiv = document.getElementById('main-div')
+
+            if(characterDiv) {
+              mainDiv.replaceChild(newCharacterDiv, characterDiv)
+            } else {
+              mainDiv.appendChild(newCharacterDiv)
+            }
+            setTimeout(() => {
+              newCharacterDiv.scrollIntoView({
+              behavior: "smooth"
+            })
+            }, 500)
+          })
+          .catch(e => console.log(e))
+      }else {
+        alert('Please upload a file')
+      }
+    })
+  }
+</script>
+</html>
