@@ -1,6 +1,7 @@
 from fastai.tabular.all import *
 import pathlib
 import os
+import platform
 
 #api imports
 from flask import Flask, request, render_template
@@ -8,7 +9,8 @@ from flask import Flask, request, render_template
 #model preparation
 
 temp = pathlib.PosixPath
-pathlib.PosixPath = pathlib.WindowsPath
+if platform.system() == 'Windows':
+  pathlib.PosixPath = pathlib.WindowsPath
 
 path = Path(os.getcwd())
 full_path = os.path.join(path,'export.pkl')
