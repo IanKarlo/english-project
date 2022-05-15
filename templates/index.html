@@ -73,6 +73,12 @@
 
         axios.post('https://english-project-ikts.herokuapp.com//model', formData)
           .then(res => {
+
+            if(res.data === 'Invalid format') {
+              alert('Formato de imagem inválido')
+              return;
+            }
+
             const img_dict = {
                 'Vinsmoke Sanji': 'https://i0.wp.com/mugiwarasoficial.com/wp-content/uploads/2021/10/Sanji-of-One-Piece.jpg?fit=960%2C500&ssl=1',
                 'Roronoa Zoro': 'https://criticalhits.com.br/wp-content/uploads/2021/08/one-piece-zoro-1278854-1280x0-1.jpeg',

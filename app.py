@@ -54,15 +54,7 @@ def useModel():
           'Monkey D. Luffy': 'Monkey D. Luffy'
       }
       return img_dict.get(pred[0], '')
-    return '''
-    <!doctype html>
-    <title>Upload new File</title>
-    <h1>Upload new File</h1>
-    <form method=post enctype=multipart/form-data>
-      <input type=file name=file>
-      <input type=submit value=Upload>
-    </form>
-    '''
+    return 'Invalid format'
 
 if __name__ == "__main__":
   print("Start")
