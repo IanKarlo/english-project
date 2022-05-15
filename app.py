@@ -5,6 +5,7 @@ import platform
 
 #api imports
 from flask import Flask, request, render_template
+from flask_cors import CORS
 
 #model preparation
 
@@ -20,6 +21,7 @@ model = load_learner(full_path)
 #api configuration
 
 API = Flask(__name__)
+CORS(API)
 
 UPLOAD_FOLDER = 'uploads'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
